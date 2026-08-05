@@ -1,0 +1,11 @@
+---
+import Base from '../../layouts/Base.astro';
+import World from '../../components/World.astro';
+import { getContent } from '../../content';
+
+const { ui, person } = getContent('en');
+---
+
+<Base lang="en">
+  <World ui={ui} person={person} />
+</Base>

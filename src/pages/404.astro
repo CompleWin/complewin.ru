@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { getContent, localePath } from '../content';
+
+const { ui } = getContent('ru');
+---
+
+<Base lang="ru" title={ui.notFound.title} path="/" noindex>
+  <main class="flex flex-1 flex-col items-center justify-center gap-4 px-[clamp(14px,4vw,40px)] py-[clamp(20px,6vh,60px)]">
+    <p class="mb-0 font-mono text-[clamp(13px,2.6vw,16px)] text-text/62">{ui.notFound.title}</p>
+    <a class="btn btn-secondary" href={localePath('ru', '/')}>
+      <Icon name="arrow-left" size={16} />
+      {ui.notFound.back}
+    </a>
+  </main>
+</Base>

@@ -1,0 +1,15 @@
+import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  site: 'https://complewin.ru',
+  output: 'static',
+  i18n: {
+    defaultLocale: 'ru',
+    locales: ['ru', 'en'],
+    routing: { prefixDefaultLocale: false },
+  },
+  vite: {
+    plugins: [tailwindcss()],
+  },
+});

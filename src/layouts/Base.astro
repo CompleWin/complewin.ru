@@ -1,0 +1,97 @@
+---
+import Header from '../components/Header.astro';
+import { getContent, localePath } from '../content';
+import type { Lang } from '../content/types';
+import '../styles/app.css';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  path?: string;
+  noindex?: boolean;
+}
+
+const PROFILE_KINDS = ['telegram', 'github'];
+
+const KNOWS_ABOUT = [
+  'C#',
+  '.NET',
+  'ASP.NET Core',
+  'Entity Framework Core',
+  'Java',
+  'Spring Boot',
+  'PostgreSQL',
+  'REST API',
+  'Docker',
+  'TypeScript',
+  'Vue',
+  'React',
+  'Astro',
+];
+
+const { lang, title, path: pathOverride, noindex } = Astro.props;
+const { meta, ui, person, experience, education, contact } = getContent(lang);
+
+const path = pathOverride ?? (Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/');
+const canonical = new URL(localePath(lang, path), Astro.site);
+const ruUrl = new URL(localePath('ru', path), Astro.site);
+const enUrl = new URL(localePath('en', path), Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: person.fullName,
+  jobTitle: person.role,
+  url: canonical.href,
+  image: ogImage.href,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: person.city,
+    addressCountry: 'RU',
+  },
+  worksFor: { '@type': 'Organization', name: experience.employer },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: education.university },
+  knowsAbout: KNOWS_ABOUT,
+  sameAs: contact.links.filter((link) => PROFILE_KINDS.includes(link.kind)).map((link) => link.href),
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ?? meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {noindex && <meta name="robots" content="noindex" />}
+    {
+      !noindex && (
+        <>
+          <link rel="canonical" href={canonical} />
+          <link rel="alternate" hreflang="ru" href={ruUrl} />
+          <link rel="alternate" hreflang="en" href={enUrl} />
+          <link rel="alternate" hreflang="x-default" href={ruUrl} />
+        </>
+      )
+    }
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="complewin.ru" />
+    <meta property="og:locale" content={lang === 'ru' ? 'ru_RU' : 'en_US'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={meta.ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Header lang={lang} ui={ui} path={path} />
+    <slot />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

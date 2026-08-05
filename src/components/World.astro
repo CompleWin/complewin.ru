@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro';
+import { GLOW_DELAY_STEP_SECONDS, PADS } from '../data/pads';
+import type { Person, UiStrings } from '../content/types';
+import '../styles/world.css';
+
+interface Props {
+  ui: UiStrings;
+  person: Person;
+}
+
+const { ui, person } = Astro.props;
+
+const DPAD = ['up', 'left', 'down', 'right'] as const;
+const DPAD_GLYPHS = { up: '↑', left: '←', down: '↓', right: '→' };
+const DPAD_CELL = {
+  up: 'col-start-2 row-start-1',
+  left: 'col-start-1 row-start-2',
+  down: 'col-start-2 row-start-2',
+  right: 'col-start-3 row-start-2',
+};
+
+const DPAD_BUTTON =
+  'rounded-[9px] border border-divider bg-surface/70 text-[16px] text-text cursor-pointer hover:border-accent hover:text-accent';
+---
+
+<main
+  class="map flex flex-1 flex-col items-center justify-center gap-[clamp(10px,2vh,18px)] overflow-hidden px-[10px] py-[clamp(10px,2vh,24px)]"
+  data-world
+>
+  <div class="viewport" role="application" aria-label={ui.mapLabel}>
+    <div class="world">
+      {
+        PADS.map((pad, index) => (
+          <button
+            type="button"
+            class:list={['pad', pad.key === 'console' && 'pad-system']}
+            style={`--pad-x:${pad.x}px;--pad-y:${pad.y}px;--pad-delay:${index * GLOW_DELAY_STEP_SECONDS}s`}
+            data-pad={pad.key}
+            data-announce={`${ui.pads[pad.key]}. ${ui.padAnnounce}`}
+            aria-label={`${ui.openSection}: ${ui.pads[pad.key]}`}
+          >
+            <span class="pad-glow" />
+            <Icon name={pad.icon} />
+            <span class="pad-label">{ui.pads[pad.key]}</span>
+          </button>
+        ))
+      }
+      <div class="guy">
+        <p class="guy-hint font-mono" data-hint hidden><span>{ui.enter}</span></p>
+        <span class="guy-shadow"></span>
+        <span class="guy-body"></span>
+        <span class="guy-visor"></span>
+      </div>
+    </div>
+    <div class="pointer-events-none absolute top-[13px] left-[16px] max-w-[62%]">
+      <h1 class="mb-0 text-[clamp(17px,4.4vw,22px)]">{person.name}</h1>
+      <p class="mt-[2px] mb-0 text-[12.5px] text-text/55">{person.role}</p>
+    </div>
+    <p
+      class="pointer-events-none absolute right-[14px] bottom-[11px] mb-0 max-w-[min(330px,74%)] text-right font-mono text-11 leading-[1.5] tracking-[.03em] text-text/45"
+    >
+      {ui.mapHint}
+    </p>
+  </div>
+
+  <div class="flex w-[var(--viewport-width)] items-center justify-between gap-[14px]">
+    <div class="grid grid-cols-[repeat(3,44px)] grid-rows-[repeat(2,44px)] gap-[6px]">
+      {
+        DPAD.map((direction) => (
+          <button type="button" class={`${DPAD_CELL[direction]} ${DPAD_BUTTON}`} data-move={direction} aria-label={direction}>
+            {DPAD_GLYPHS[direction]}
+          </button>
+        ))
+      }
+    </div>
+    <button
+      type="button"
+      class="min-h-[44px] px-[18px] font-mono text-12 tracking-wide text-accent bg-accent/10 rounded-[9px] border border-accent cursor-pointer hover:bg-accent/20"
+      data-open>{ui.open}</button
+    >
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-status></p>
+</main>

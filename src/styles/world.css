@@ -1,0 +1,189 @@
+@keyframes padglow {
+  0%,
+  100% {
+    opacity: .45;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: .85;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.map {
+  --cell: 60px;
+  --world-width: 900px;
+  --world-height: 540px;
+  --chrome-height: 216px;
+  --viewport-min-width: 240px;
+  --viewport-min-height: 300px;
+  --viewport-width: max(var(--viewport-min-width), min(var(--world-width), 100%));
+  --viewport-height: max(var(--viewport-min-height), min(var(--world-height), 100vh - var(--chrome-height)));
+  --guy-x: 60px;
+  --guy-y: 240px;
+  --camera-x: 0px;
+  --camera-y: calc(-1 * clamp(0px, var(--guy-y) + var(--cell) / 2 - var(--viewport-height) / 2, var(--world-height) - var(--viewport-height)));
+}
+
+.viewport {
+  position: relative;
+  flex: none;
+  width: var(--viewport-width);
+  height: var(--viewport-height);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-neutral-800), 0 24px 60px rgba(0, 0, 0, .5);
+}
+
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--world-width);
+  height: var(--world-height);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-accent) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 7%, transparent) 1px, transparent 1px),
+    radial-gradient(700px 420px at 30% 20%, color-mix(in srgb, var(--color-accent) 13%, transparent), transparent 70%);
+  background-size: 60px 60px, 60px 60px, 100% 100%;
+  transform: translate(var(--camera-x), var(--camera-y));
+}
+
+.pad {
+  position: absolute;
+  left: var(--pad-x);
+  top: var(--pad-y);
+  width: var(--cell);
+  height: var(--cell);
+  color: var(--color-accent-300);
+  cursor: pointer;
+}
+
+.pad svg {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+.pad-glow {
+  position: absolute;
+  inset: 6px;
+  border-radius: 12px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent), transparent 72%);
+  animation: padglow 3.2s ease-in-out var(--pad-delay) infinite;
+}
+
+.pad-label {
+  position: absolute;
+  left: -25px;
+  top: 62px;
+  width: 110px;
+  text-align: center;
+  font-size: var(--text-11);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+}
+
+.pad-system .pad-label {
+  font-family: var(--font-mono);
+  text-transform: none;
+}
+
+.guy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--cell);
+  height: var(--cell);
+  transform: translate(var(--guy-x), var(--guy-y));
+  pointer-events: none;
+}
+
+.guy-shadow {
+  position: absolute;
+  left: 16px;
+  top: 44px;
+  width: 28px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .5);
+  filter: blur(2px);
+}
+
+.guy-body {
+  position: absolute;
+  left: 17px;
+  top: 12px;
+  width: 26px;
+  height: 34px;
+  border-radius: 7px 7px 4px 4px;
+  background: linear-gradient(var(--color-accent-300), var(--color-accent-600));
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 50%, transparent);
+}
+
+.guy-visor {
+  position: absolute;
+  left: 22px;
+  top: 21px;
+  width: 16px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--color-bg);
+}
+
+.guy-hint {
+  position: absolute;
+  left: -40px;
+  top: -32px;
+  width: 140px;
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-11);
+  color: var(--color-accent-300);
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+.guy-hint span {
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--color-accent-800) 90%, transparent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.map[data-ready] .world {
+  transition: transform .18s ease-out;
+}
+
+.map[data-ready] .guy {
+  transition: transform .12s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pad-glow {
+    opacity: .65;
+    animation: none;
+  }
+
+  .guy-hint {
+    animation: none;
+  }
+
+  .map[data-ready] .world,
+  .map[data-ready] .guy {
+    transition: none;
+  }
+}

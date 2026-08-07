@@ -95,6 +95,12 @@ export function initWorld(root: HTMLElement): void {
   }
 
   function render(): void {
+    root.hidden = state.mode === 'console';
+
+    if (root.hidden) {
+      return;
+    }
+
     root.style.setProperty('--viewport-height', `${viewportHeight()}px`);
     root.style.setProperty('--guy-x', `${state.x}px`);
     root.style.setProperty('--guy-y', `${state.y}px`);

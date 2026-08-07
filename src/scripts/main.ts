@@ -1,3 +1,4 @@
+import { initConsole } from './console';
 import { initPanels } from './panel';
 import { subscribe } from './state';
 import { initWorld, stateHash } from './world';
@@ -15,10 +16,15 @@ function keepHashInLinks(): void {
 }
 
 const world = document.querySelector<HTMLElement>('[data-world]');
+const terminal = document.querySelector<HTMLElement>('[data-console]');
 
 keepHashInLinks();
 initPanels();
 
 if (world) {
   initWorld(world);
+}
+
+if (terminal) {
+  initConsole(terminal);
 }

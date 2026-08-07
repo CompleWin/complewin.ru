@@ -1,13 +1,15 @@
 ---
 import Base from '../../layouts/Base.astro';
 import World from '../../components/World.astro';
+import Console from '../../components/Console.astro';
 import Sections from '../../components/Sections.astro';
 import { getContent } from '../../content';
 
 const content = getContent('en');
 ---
 
-<Base lang="en">
+<Base lang="en" map>
   <World ui={content.ui} person={content.person} />
+  <Console lang="en" console={content.console} />
   <Sections lang="en" content={content} />
 </Base>

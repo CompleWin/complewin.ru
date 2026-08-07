@@ -7,9 +7,10 @@ interface Props {
   lang: Lang;
   ui: UiStrings;
   path: string;
+  map?: boolean;
 }
 
-const { lang, ui, path } = Astro.props;
+const { lang, ui, path, map } = Astro.props;
 
 const LOGO_USER = 'nikolay';
 const LOGO_HOST = '@ivakhnenko';
@@ -27,6 +28,14 @@ const SEG_LINK =
   >
     {LOGO_USER}<span class="text-text/45">{LOGO_HOST}</span>
   </a>
+  {
+    map && (
+      <button type="button" class="btn btn-secondary text-12 whitespace-nowrap" data-to-map hidden>
+        <Icon name="arrow-left" size={15} />
+        {ui.toMap}
+      </button>
+    )
+  }
   <nav class="inline-flex overflow-hidden rounded-md border border-divider" aria-label={ui.language}>
     <a class={SEG_LINK} href={localePath('ru', path)} hreflang="ru" data-keep-hash aria-current={lang === 'ru' ? 'page' : undefined}>RU</a>
     <a

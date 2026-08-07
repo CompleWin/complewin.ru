@@ -1,0 +1,53 @@
+---
+import { localePath, otherLang } from '../content';
+import type { ConsoleStrings, Lang } from '../content/types';
+import { consolePayload } from '../data/console';
+import '../styles/console.css';
+
+interface Props {
+  lang: Lang;
+  console: ConsoleStrings;
+}
+
+const { lang, console: strings } = Astro.props;
+
+const WINDOW_TITLE = 'complewin.ru';
+const SHELL_USER = 'nikolay@ivakhnenko';
+const SHELL_PATH = '~';
+const SHELL_SIGIL = '%';
+
+const payload = JSON.stringify(consolePayload(lang)).replaceAll('<', '\\u003c');
+---
+
+<main
+  class="console flex flex-1 flex-col items-center justify-center overflow-hidden px-[10px] py-[clamp(10px,2vh,24px)]"
+  aria-label={strings.label}
+  data-console
+  data-resume={localePath(lang, '/resume/')}
+  data-lang={localePath(otherLang(lang), '/')}
+  hidden
+>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <p class="terminal-title">{WINDOW_TITLE}</p>
+      <button type="button" class="terminal-close" aria-label={strings.closeLabel} data-to-map></button>
+    </div>
+    <div class="terminal-screen" data-screen>
+      <div class="lines" role="log" aria-live="polite" data-feed></div>
+      <p class="input-row">
+        <span class="prompt" aria-hidden="true"><span class="prompt-user">{SHELL_USER}</span> <span class="prompt-path">{SHELL_PATH}</span> {SHELL_SIGIL}</span>
+        <input
+          class="term-input"
+          type="text"
+          aria-label={strings.inputLabel}
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
+          enterkeyhint="go"
+          data-input
+        />
+      </p>
+    </div>
+  </div>
+  <script type="application/json" is:inline data-payload set:html={payload}></script>
+</main>

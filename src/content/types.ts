@@ -143,14 +143,54 @@ export interface Contact {
   note: string;
 }
 
-export interface ConsoleLine {
-  kind: 'head' | 'out' | 'dim';
+export type CommandName =
+  | 'help'
+  | 'ls'
+  | 'cd'
+  | 'pwd'
+  | 'cat'
+  | 'tree'
+  | 'neofetch'
+  | 'secrets'
+  | 'whoami'
+  | 'resume'
+  | 'lang'
+  | 'map'
+  | 'clear';
+
+export interface CommandHelp {
+  usage: string;
   text: string;
 }
 
+export interface ConsoleErrors {
+  noSuchFile: string;
+  notDirectory: string;
+  isDirectory: string;
+  denied: string;
+  missingOperand: string;
+  notFound: string;
+}
+
+export interface SecretStrings {
+  title: string;
+  found: string;
+  hint: string;
+  command: string;
+  unknown: string;
+  complete: string;
+}
+
 export interface ConsoleStrings {
-  banner: ConsoleLine[];
-  prompt: string;
+  label: string;
+  inputLabel: string;
+  closeLabel: string;
+  whoami: string;
+  helpTitle: string;
+  commands: Record<CommandName, CommandHelp>;
+  errors: ConsoleErrors;
+  secrets: SecretStrings;
+  leaving: Record<'map' | 'resume' | 'lang', string>;
 }
 
 export interface UiStrings {

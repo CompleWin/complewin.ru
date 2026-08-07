@@ -9,6 +9,7 @@ interface Props {
   title?: string;
   path?: string;
   noindex?: boolean;
+  map?: boolean;
 }
 
 const PROFILE_KINDS = ['telegram', 'github'];
@@ -29,7 +30,7 @@ const KNOWS_ABOUT = [
   'Astro',
 ];
 
-const { lang, title, path: pathOverride, noindex } = Astro.props;
+const { lang, title, path: pathOverride, noindex, map } = Astro.props;
 const { meta, ui, person, experience, education, contact } = getContent(lang);
 
 const path = pathOverride ?? (Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/');
@@ -88,7 +89,7 @@ const schema = {
     <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
   </head>
   <body class="flex min-h-screen flex-col">
-    <Header lang={lang} ui={ui} path={path} />
+    <Header lang={lang} ui={ui} path={path} map={map} />
     <slot />
     <script>
       import '../scripts/main';

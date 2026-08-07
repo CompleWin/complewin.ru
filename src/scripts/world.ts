@@ -63,6 +63,10 @@ export function stateHash(): string {
   return state.panel ? `#${state.panel}` : '';
 }
 
+export function syncHash(): void {
+  history.replaceState(null, '', stateHash() || location.pathname + location.search);
+}
+
 export function initWorld(root: HTMLElement): void {
   const viewport = root.querySelector<HTMLElement>('.viewport')!;
   const hint = root.querySelector<HTMLElement>('[data-hint]')!;
@@ -101,10 +105,6 @@ export function initWorld(root: HTMLElement): void {
 
     hint.hidden = here === null;
     announce(here);
-  }
-
-  function syncHash(): void {
-    history.replaceState(null, '', stateHash() || location.pathname + location.search);
   }
 
   function stopWalk(): void {

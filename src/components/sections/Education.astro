@@ -1,0 +1,25 @@
+---
+import type { Education } from '../../content/types';
+
+interface Props {
+  education: Education;
+}
+
+const { education } = Astro.props;
+---
+
+<h2 class="mb-[18px] text-[clamp(22px,3vw,30px)]">{education.title}</h2>
+<p class="mb-0 text-[19px] font-medium">{education.university}</p>
+<p class="mt-[4px] mb-0 text-14 text-text/70">{education.institute}</p>
+<p class="mb-0 text-14 text-text/70">{education.program}</p>
+<p class="mt-[8px] mb-0 font-mono text-12 text-accent-300">{education.meta}</p>
+<dl class="mt-[26px] flex flex-wrap gap-[26px]">
+  {
+    education.languages.map((language) => (
+      <div>
+        <dt class="mb-[5px] text-10 tracking-[.11em] uppercase text-accent">{language.name}</dt>
+        <dd class="text-15">{language.level}</dd>
+      </div>
+    ))
+  }
+</dl>

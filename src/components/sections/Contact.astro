@@ -1,0 +1,49 @@
+---
+import Icon from '../Icon.astro';
+import type { Contact, ContactLink } from '../../content/types';
+
+interface Props {
+  contact: Contact;
+  pdfHref: string;
+}
+
+const { contact, pdfHref } = Astro.props;
+
+const BUTTON = 'btn px-[15px] py-[9px] text-14';
+const ICONS = {
+  telegram: 'paper-plane-tilt',
+  email: 'envelope-simple',
+  phone: 'phone',
+  github: 'github-logo',
+} as const satisfies Record<ContactLink['kind'], string>;
+
+const EXTERNAL: ContactLink['kind'][] = ['telegram', 'github'];
+const PRIMARY: ContactLink['kind'] = 'telegram';
+---
+
+<h2 class="mb-[8px] text-[clamp(22px,3vw,30px)]">{contact.title}</h2>
+<p class="max-w-[56ch] text-15 leading-[1.7] text-text/70">{contact.lead}</p>
+<div class="mt-[20px] mb-[26px] flex flex-wrap gap-[9px]">
+  {
+    contact.links.map((link) => {
+      const external = EXTERNAL.includes(link.kind);
+
+      return (
+        <a
+          class:list={[BUTTON, link.kind === PRIMARY ? 'btn-primary' : 'btn-secondary']}
+          href={link.href}
+          target={external ? '_blank' : undefined}
+          rel={external ? 'noopener' : undefined}
+        >
+          <Icon name={ICONS[link.kind]} size={17} />
+          {link.label}
+        </a>
+      );
+    })
+  }
+  <a class={`${BUTTON} btn-secondary`} href={pdfHref}>
+    <Icon name="file-pdf" size={17} />
+    {contact.downloadPdf}
+  </a>
+</div>
+<p class="mb-0 font-mono text-12 text-text/45">{contact.note}</p>

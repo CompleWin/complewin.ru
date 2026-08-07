@@ -1,0 +1,44 @@
+---
+import SectionPanel from './SectionPanel.astro';
+import About from './sections/About.astro';
+import Experience from './sections/Experience.astro';
+import Projects from './sections/Projects.astro';
+import Skills from './sections/Skills.astro';
+import Education from './sections/Education.astro';
+import Teaching from './sections/Teaching.astro';
+import Contact from './sections/Contact.astro';
+import { localePath } from '../content';
+import type { Content, Lang } from '../content/types';
+
+interface Props {
+  lang: Lang;
+  content: Content;
+}
+
+const { lang, content } = Astro.props;
+const { ui, person, experience, projects, skills, education, teaching, contact } = content;
+
+const pdfHref = `${localePath(lang, '/resume/')}?print=1`;
+---
+
+<SectionPanel section="about" kicker={ui.kickers.about} close={ui.close} closeLabel={ui.closeSection}>
+  <About person={person} />
+</SectionPanel>
+<SectionPanel section="experience" kicker={ui.kickers.experience} close={ui.close} closeLabel={ui.closeSection}>
+  <Experience job={experience} />
+</SectionPanel>
+<SectionPanel section="projects" kicker={ui.kickers.projects} close={ui.close} closeLabel={ui.closeSection}>
+  <Projects projects={projects} />
+</SectionPanel>
+<SectionPanel section="skills" kicker={ui.kickers.skills} close={ui.close} closeLabel={ui.closeSection}>
+  <Skills skills={skills} />
+</SectionPanel>
+<SectionPanel section="education" kicker={ui.kickers.education} close={ui.close} closeLabel={ui.closeSection}>
+  <Education education={education} />
+</SectionPanel>
+<SectionPanel section="teaching" kicker={ui.kickers.teaching} close={ui.close} closeLabel={ui.closeSection}>
+  <Teaching teaching={teaching} />
+</SectionPanel>
+<SectionPanel section="contact" kicker={ui.kickers.contact} close={ui.close} closeLabel={ui.closeSection}>
+  <Contact contact={contact} pdfHref={pdfHref} />
+</SectionPanel>

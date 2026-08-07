@@ -1,3 +1,4 @@
+import { initPanels } from './panel';
 import { subscribe } from './state';
 import { initWorld, stateHash } from './world';
 
@@ -16,6 +17,7 @@ function keepHashInLinks(): void {
 const world = document.querySelector<HTMLElement>('[data-world]');
 
 keepHashInLinks();
+initPanels();
 
 if (world) {
   initWorld(world);

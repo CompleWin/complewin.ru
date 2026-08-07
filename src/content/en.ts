@@ -18,6 +18,7 @@ export const en: Content = {
     enter: 'Enter',
     open: 'ENTER',
     openSection: 'Open section',
+    closeSection: 'Close section',
     mapHint: '← ↑ ↓ → or WASD · Enter to open · Esc to close',
     mapLabel: 'Map: walk the character between the section pads',
     padAnnounce: 'Press Enter to open',

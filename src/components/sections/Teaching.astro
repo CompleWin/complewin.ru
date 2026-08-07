@@ -1,0 +1,40 @@
+---
+import type { Teaching } from '../../content/types';
+
+interface Props {
+  teaching: Teaching;
+}
+
+const { teaching } = Astro.props;
+---
+
+<h2 class="mb-[6px] text-[clamp(22px,3vw,30px)]">{teaching.title}</h2>
+<p class="mb-[20px] text-15 text-accent-300">{teaching.subtitle}</p>
+<ul class="mb-[22px] flex flex-wrap gap-[12px]">
+  {
+    teaching.stats.map((stat) => (
+      <li class="min-w-[150px] flex-1 rounded-[10px] px-[16px] py-[14px] bg-surface shadow-sm">
+        <p class="mb-0 text-[clamp(26px,4vw,34px)] leading-[1] font-medium">{stat.value}</p>
+        <p class="mt-[4px] mb-0 text-12 text-text/55">{stat.label}</p>
+      </li>
+    ))
+  }
+</ul>
+{teaching.body.map((paragraph) => <p class="max-w-[66ch] text-15 leading-[1.7] text-pretty">{paragraph}</p>)}
+<div class="mt-[22px] rounded-[10px] px-[18px] py-[16px] bg-accent/8 shadow-[0_0_0_1px_var(--color-accent-800)]">
+  <p class="mb-[12px] text-15 font-medium">{teaching.results.title}</p>
+  <ul class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-[12px]">
+    {
+      teaching.results.items.map((item) => (
+        <li>
+          <p class="mb-[5px] text-10 tracking-widest uppercase text-accent">{item.label}</p>
+          {item.value ? (
+            <p class="mb-0 text-17 font-medium">{item.value}</p>
+          ) : (
+            <span class="tag tag-outline text-10">{teaching.results.pending}</span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</div>

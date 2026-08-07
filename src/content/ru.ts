@@ -18,6 +18,7 @@ export const ru: Content = {
     enter: 'Enter',
     open: 'ENTER',
     openSection: 'Открыть раздел',
+    closeSection: 'Закрыть раздел',
     mapHint: '← ↑ ↓ → или WASD · Enter — открыть · Esc — закрыть',
     mapLabel: 'Карта: персонаж ходит между площадками разделов',
     padAnnounce: 'Нажмите Enter, чтобы открыть',

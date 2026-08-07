@@ -163,6 +163,7 @@ export interface UiStrings {
   enter: string;
   open: string;
   openSection: string;
+  closeSection: string;
   mapHint: string;
   mapLabel: string;
   padAnnounce: string;

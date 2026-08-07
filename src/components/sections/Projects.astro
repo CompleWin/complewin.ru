@@ -1,0 +1,44 @@
+---
+import type { Projects } from '../../content/types';
+
+interface Props {
+  projects: Projects;
+}
+
+const { projects } = Astro.props;
+---
+
+<h2 class="mb-[18px] text-[clamp(22px,3vw,30px)]">{projects.title}</h2>
+<div class="flagship mb-[14px] rounded-[12px] p-[clamp(16px,2.4vw,26px)] shadow-[0_0_0_1px_var(--color-neutral-700)]">
+  <div class="mb-[8px] flex flex-wrap items-baseline gap-[10px]">
+    <p class="mb-0 text-[clamp(19px,2.4vw,24px)] font-medium">{projects.flagship.name}</p>
+    {projects.flagship.badge && <span class="tag tag-outline">{projects.flagship.badge}</span>}
+  </div>
+  <p class="max-w-[66ch] text-[14.5px] leading-[1.7] text-text/80 text-pretty">{projects.flagship.summary}</p>
+  <ul class="mt-[14px] flex flex-wrap gap-[6px]">
+    {projects.flagship.tags.map((tag) => <li class="tag tag-accent">{tag}</li>)}
+  </ul>
+</div>
+<ul class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[12px]">
+  {
+    projects.rest.map((project) => (
+      <li class="card elev-sm">
+        <div class="card-title">{project.name}</div>
+        <p class="card-body text-[13.5px] leading-[1.6]">{project.summary}</p>
+        <ul class="flex flex-wrap gap-[5px]">
+          {project.tags.map((tag) => (
+            <li class="tag tag-neutral">{tag}</li>
+          ))}
+        </ul>
+        <div class="card-meta gap-[12px]">
+          {project.meta}
+          {project.links.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener">
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </li>
+    ))
+  }
+</ul>

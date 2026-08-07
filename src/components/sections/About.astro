@@ -1,0 +1,25 @@
+---
+import type { Person } from '../../content/types';
+
+interface Props {
+  person: Person;
+}
+
+const { person } = Astro.props;
+
+const BADGE = {
+  neutral: 'tag tag-neutral',
+  outline: 'tag tag-outline',
+};
+---
+
+<h2 class="mb-[4px] text-[clamp(24px,3.4vw,34px)]">{person.name}</h2>
+<p class="mb-[18px] text-15 text-accent-300">{person.role}</p>
+<ul class="mb-[22px] flex flex-wrap gap-[7px]">
+  {person.badges.map((badge) => <li class={BADGE[badge.variant]}>{badge.text}</li>)}
+</ul>
+{
+  person.summary.map((paragraph) => (
+    <p class="max-w-[68ch] text-15 leading-[1.7] text-pretty">{paragraph}</p>
+  ))
+}

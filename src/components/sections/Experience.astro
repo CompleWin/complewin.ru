@@ -1,0 +1,29 @@
+---
+import type { Job } from '../../content/types';
+
+interface Props {
+  job: Job;
+}
+
+const { job } = Astro.props;
+---
+
+<h2 class="mb-[3px] text-[clamp(22px,3vw,30px)]">{job.employer}</h2>
+<div class="mb-[16px] flex flex-wrap items-baseline gap-[10px]">
+  <p class="mb-0 text-15 text-accent-300">{job.position}</p>
+  <p class="mb-0 font-mono text-12 text-text/50">{job.period}</p>
+</div>
+<p class="max-w-[68ch] text-[14.5px] leading-[1.7] text-text/75 text-pretty">{job.platform}</p>
+<ul class="mt-[20px] mb-[22px] grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-[12px]">
+  {
+    job.achievements.map((achievement) => (
+      <li class="card elev-sm">
+        <div class="card-kicker">{achievement.kicker}</div>
+        <p class="card-body text-[13.5px] leading-[1.65]">{achievement.body}</p>
+      </li>
+    ))
+  }
+</ul>
+<ul class="flex flex-wrap gap-[6px]">
+  {job.stack.map((item) => <li class="tag tag-accent">{item}</li>)}
+</ul>

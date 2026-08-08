@@ -10,8 +10,7 @@ export const en: Content = {
 
   ui: {
     plainResume: 'Plain resume',
-    toMap: 'Map',
-    back: 'Back',
+    toMap: 'Back to the map',
     print: 'Print / PDF',
     language: 'Language',
     close: 'esc',

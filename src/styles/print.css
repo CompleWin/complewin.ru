@@ -1,0 +1,59 @@
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff;
+  }
+
+  .docsheet {
+    position: static !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    zoom: .88;
+  }
+
+  .docsheet,
+  .docsheet * {
+    background: transparent !important;
+    color: #111 !important;
+    box-shadow: none !important;
+    border-color: #bbb !important;
+    text-shadow: none !important;
+  }
+
+  .docsheet a {
+    text-decoration: underline !important;
+  }
+
+  .docsheet a[href^="http"]::after {
+    content: " (" attr(href) ")";
+  }
+
+  .docsheet h3 {
+    break-after: avoid;
+    margin-bottom: 6px;
+  }
+
+  .docsheet li {
+    break-inside: avoid;
+  }
+
+  .docsheet section li:not(:last-child) {
+    margin-bottom: 5px;
+  }
+
+  .docsheet section {
+    margin-bottom: 16px;
+  }
+
+  .docsheet section > div {
+    margin-bottom: 9px;
+  }
+
+  .docsheet td {
+    padding: 3px;
+  }
+}

@@ -1,7 +1,7 @@
 .console {
   --term-size: clamp(12px, 1.55vw, 14px);
   --term-leading: 1.85;
-  --term-dim: color-mix(in srgb, var(--color-text) 52%, transparent);
+  --term-dim: color-mix(in srgb, var(--color-text) 55%, transparent);
   --terminal-width: max(240px, min(900px, 100%));
   --terminal-height: max(300px, min(540px, 100vh - 216px));
 }

@@ -1,0 +1,148 @@
+---
+import Icon from './Icon.astro';
+import type { Content, ContactLink } from '../content/types';
+import '../styles/print.css';
+
+interface Props {
+  content: Content;
+}
+
+const { content } = Astro.props;
+const { ui, person, experience, projects, skills, education, teaching, contact } = content;
+
+const HEADING = 'mb-[10px] text-13 tracking-widest uppercase text-accent';
+const TITLE_ROW = 'flex flex-wrap items-baseline gap-x-[12px] gap-y-[4px]';
+const JOB_TITLE = 'mb-0 text-17 font-medium';
+const PERIOD = 'mb-0 font-mono text-12 text-text/55';
+const ENTRY_TITLE = 'mb-0 text-[16px] font-medium';
+const EXTERNAL: ContactLink['kind'][] = ['telegram', 'github'];
+
+const projectList = [projects.flagship, ...projects.rest];
+const filledResults = teaching.results.items.filter((item) => item.value);
+const resultsLine = filledResults.map((item) => `${item.label} — ${item.value}`).join(' · ');
+---
+
+<main class="docsheet flex-1 px-[clamp(16px,5vw,40px)] py-[clamp(20px,5vh,54px)]">
+  <div class="mx-auto w-[min(760px,100%)]">
+    <div class="mb-[clamp(20px,4vh,34px)] flex print:hidden">
+      <button type="button" class="btn btn-primary text-13" data-print>
+        <Icon name="printer" size={16} />
+        {ui.print}
+      </button>
+    </div>
+
+    <h1 class="mb-[6px] text-[clamp(28px,4.6vw,40px)]">{person.fullName}</h1>
+    <p class="mb-[14px] text-17 text-accent-300">{person.role}</p>
+    <ul class="mb-[30px] flex flex-wrap gap-x-[18px] gap-y-[8px] text-[13.5px] text-text/70">
+      <li>{person.city}</li>
+      <li>{person.age}</li>
+      <li>{person.citizenship}</li>
+      {
+        contact.links.map((link) => {
+          const external = EXTERNAL.includes(link.kind);
+
+          return (
+            <li>
+              <a href={link.href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+                {link.short}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <section class="mb-[26px]">
+      <h3 class={HEADING}>{ui.resumeHeadings.about}</h3>
+      <p class="mb-0 text-[14.5px] leading-[1.65] text-pretty">{person.summaryPlain}</p>
+    </section>
+
+    <section class="mb-[26px]">
+      <h3 class={HEADING}>{ui.resumeHeadings.experience}</h3>
+      <div class={TITLE_ROW}>
+        <p class={JOB_TITLE}>{experience.employer} — {experience.position}</p>
+        <p class={PERIOD}>{experience.periodShort}</p>
+      </div>
+      <p class="mt-[8px] mb-[12px] text-14 leading-[1.65] text-text/72">{experience.platformBrief}</p>
+      <ul class="mb-[12px] pl-[20px] list-disc text-14 leading-[1.65]">
+        {
+          experience.achievements.map((achievement) => (
+            <li class="mb-[9px] last:mb-0">
+              <b class="font-medium">{achievement.kicker}.</b> {achievement.brief}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mb-0 text-13 text-text/60">
+        <b class="font-medium text-text">{experience.stackLabel}</b>
+        {experience.stack.join(', ')}
+      </p>
+    </section>
+
+    <section class="mb-[26px]">
+      <h3 class={HEADING}>{ui.resumeHeadings.teaching}</h3>
+      <div class={TITLE_ROW}>
+        <p class={JOB_TITLE}>{teaching.resumeTitle}</p>
+        <p class={PERIOD}>{teaching.resumeMeta}</p>
+      </div>
+      <p class="mt-[8px] mb-0 text-14 leading-[1.65]">{teaching.resumeBody}</p>
+      {
+        resultsLine && (
+          <p class="mt-[4px] mb-0 text-13 leading-[1.6] text-text/60">
+            {teaching.results.title}: {resultsLine}
+          </p>
+        )
+      }
+    </section>
+
+    <section class="mb-[26px]">
+      <h3 class={HEADING}>{ui.resumeHeadings.projects}</h3>
+      {
+        projectList.map((project) => (
+          <div class="mb-[16px] last:mb-0">
+            <p class={ENTRY_TITLE}>{project.resumeTitle}</p>
+            <p class="mt-[5px] mb-[4px] text-14 leading-[1.65]">{project.resumeSummary}</p>
+            <p class="mb-0 text-[12.5px] text-text/55">
+              {project.resumeStack}
+              {project.links.map((link) => (
+                <Fragment>
+                  {' · '}
+                  <a href={link.href} target="_blank" rel="noopener">
+                    {link.label}
+                  </a>
+                </Fragment>
+              ))}
+            </p>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="mb-[26px]">
+      <h3 class={HEADING}>{ui.resumeHeadings.skills}</h3>
+      <table class="data-table">
+        <tbody>
+          {
+            skills.rows.map((row) => (
+              <tr>
+                <td class="w-[36%] text-13 text-text/60">{row.category}</td>
+                <td>{row.items}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </section>
+
+    <section class="mb-[26px]">
+      <h3 class={HEADING}>{ui.resumeHeadings.education}</h3>
+      <p class={ENTRY_TITLE}>{education.resumeUniversity}</p>
+      <p class="mt-[4px] mb-0 text-14 text-text/72">{education.resumeMeta}</p>
+    </section>
+
+    <section>
+      <h3 class={HEADING}>{ui.resumeHeadings.languages}</h3>
+      <p class="mb-0 text-[14.5px]">{education.languagesPlain}</p>
+    </section>
+  </div>
+</main>

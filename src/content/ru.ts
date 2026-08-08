@@ -10,8 +10,7 @@ export const ru: Content = {
 
   ui: {
     plainResume: 'Простое резюме',
-    toMap: 'Карта',
-    back: 'Назад',
+    toMap: 'На карту',
     print: 'Печать / PDF',
     language: 'Язык',
     close: 'esc',

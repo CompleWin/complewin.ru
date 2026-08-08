@@ -77,7 +77,7 @@ export interface Projects {
 
 export interface SkillRow {
   category: string;
-  items: string;
+  items: string[];
 }
 
 export interface Skills {
@@ -203,7 +203,6 @@ export interface UiStrings {
   open: string;
   openSection: string;
   closeSection: string;
-  mapHint: string;
   mapLabel: string;
   padAnnounce: string;
   pads: Record<PadKey, string>;

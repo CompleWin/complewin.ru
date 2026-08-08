@@ -15,7 +15,7 @@ const { skills } = Astro.props;
       skills.rows.map((row) => (
         <tr>
           <td class="w-[34%] text-13 text-text/60">{row.category}</td>
-          <td>{row.items}</td>
+          <td>{row.items.join(', ')}</td>
         </tr>
       ))
     }

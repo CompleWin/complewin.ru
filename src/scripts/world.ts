@@ -1,17 +1,17 @@
-import type { PadKey } from '../content/types';
+import type { PadKey, SectionKey } from '../content/types';
 import type { Pad } from '../data/pads';
 import { PADS, padAt, padByKey } from '../data/pads';
 import { setState, state, subscribe } from './state';
+import { readOpened, writeOpened } from './storage';
 
 const STEP = 60;
 const WORLD_WIDTH = 900;
 const WORLD_HEIGHT = 540;
-const MAX_X = WORLD_WIDTH - STEP;
-const MAX_Y = WORLD_HEIGHT - STEP;
 const CHROME_HEIGHT = 216;
 const VIEWPORT_MIN_HEIGHT = 300;
 const WALK_INTERVAL_MS = 85;
 const CONSOLE_KEY = 'console';
+const SECTION_COUNT = PADS.filter((pad) => pad.key !== CONSOLE_KEY).length;
 
 const DIRECTIONS: Record<string, [number, number]> = {
   up: [0, -1],
@@ -37,6 +37,10 @@ const KEY_DIRECTIONS: Record<string, string> = {
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
+}
+
+function wrap(value: number, size: number): number {
+  return ((value % size) + size) % size;
 }
 
 function cameraOffset(viewport: number, world: number, position: number): number {
@@ -71,18 +75,30 @@ export function initWorld(root: HTMLElement): void {
   const viewport = root.querySelector<HTMLElement>('.viewport')!;
   const hint = root.querySelector<HTMLElement>('[data-hint]')!;
   const status = root.querySelector<HTMLElement>('[data-status]')!;
+  const notFound = root.querySelector<HTMLDialogElement>('[data-not-found]')!;
   const padButtons = new Map<string, HTMLElement>();
 
   for (const button of root.querySelectorAll<HTMLElement>('[data-pad]')) {
     padButtons.set(button.dataset.pad!, button);
   }
 
+  const consolePad = padButtons.get(CONSOLE_KEY)!;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  setState({ opened: readOpened() });
+
   let walkTimer = 0;
   let announced: PadKey | null = null;
+  let consoleUnlocked = state.opened.length >= SECTION_COUNT;
 
   function canMove(): boolean {
-    return state.mode === 'map' && state.panel === null;
+    return state.mode === 'map' && state.panel === null && !notFound.open;
+  }
+
+  function padHere(): PadKey | null {
+    const key = canMove() ? padAt(state.x, state.y) : null;
+
+    return key === CONSOLE_KEY && !consoleUnlocked ? null : key;
   }
 
   function announce(key: PadKey | null): void {
@@ -94,6 +110,14 @@ export function initWorld(root: HTMLElement): void {
     status.textContent = key ? padButtons.get(key)!.dataset.announce! : '';
   }
 
+  function revealConsole(): void {
+    if (!consolePad.hidden || !consoleUnlocked || state.panel !== null) {
+      return;
+    }
+
+    consolePad.hidden = false;
+  }
+
   function render(): void {
     root.hidden = state.mode === 'console';
 
@@ -101,16 +125,37 @@ export function initWorld(root: HTMLElement): void {
       return;
     }
 
+    revealConsole();
+
     root.style.setProperty('--viewport-height', `${viewportHeight()}px`);
     root.style.setProperty('--guy-x', `${state.x}px`);
     root.style.setProperty('--guy-y', `${state.y}px`);
     root.style.setProperty('--camera-x', `${cameraOffset(viewport.clientWidth, WORLD_WIDTH, state.x)}px`);
     root.style.setProperty('--camera-y', `${cameraOffset(viewport.clientHeight, WORLD_HEIGHT, state.y)}px`);
 
-    const here = canMove() ? padAt(state.x, state.y) : null;
+    const here = padHere();
 
     hint.hidden = here === null;
     announce(here);
+  }
+
+  function withoutTransition(update: () => void): void {
+    root.removeAttribute('data-ready');
+    update();
+    flushLayout(root);
+    root.dataset.ready = '';
+  }
+
+  function place(rawX: number, rawY: number): void {
+    const x = wrap(rawX, WORLD_WIDTH);
+    const y = wrap(rawY, WORLD_HEIGHT);
+
+    if (x === rawX && y === rawY) {
+      setState({ x, y });
+      return;
+    }
+
+    withoutTransition(() => setState({ x, y }));
   }
 
   function stopWalk(): void {
@@ -118,12 +163,35 @@ export function initWorld(root: HTMLElement): void {
     walkTimer = 0;
   }
 
+  function remember(key: SectionKey): void {
+    if (state.opened.includes(key)) {
+      return;
+    }
+
+    const opened = [...state.opened, key];
+
+    setState({ opened });
+    writeOpened(opened);
+    consoleUnlocked = opened.length >= SECTION_COUNT;
+  }
+
   function openPad(key: PadKey): void {
-    setState(key === CONSOLE_KEY ? { mode: 'console' } : { panel: key });
+    if (key === CONSOLE_KEY) {
+      setState({ mode: 'console' });
+    } else {
+      setState({ panel: key });
+      remember(key);
+    }
+
     syncHash();
   }
 
   function closeOverlays(): void {
+    if (notFound.open) {
+      notFound.close();
+      return;
+    }
+
     if (canMove()) {
       return;
     }
@@ -133,7 +201,7 @@ export function initWorld(root: HTMLElement): void {
   }
 
   function openHere(): void {
-    const key = canMove() ? padAt(state.x, state.y) : null;
+    const key = padHere();
 
     if (key) {
       openPad(key);
@@ -149,10 +217,7 @@ export function initWorld(root: HTMLElement): void {
 
     const [dx, dy] = DIRECTIONS[direction];
 
-    setState({
-      x: clamp(state.x + dx * STEP, 0, MAX_X),
-      y: clamp(state.y + dy * STEP, 0, MAX_Y),
-    });
+    place(state.x + dx * STEP, state.y + dy * STEP);
   }
 
   function walkTo(pad: Pad): void {
@@ -182,19 +247,32 @@ export function initWorld(root: HTMLElement): void {
     }, WALK_INTERVAL_MS);
   }
 
+  function showNotFound(): void {
+    history.replaceState(null, '', location.pathname + location.search);
+    notFound.showModal();
+  }
+
   function readHash(): void {
     const key = location.hash.slice(1);
 
-    if (key === CONSOLE_KEY) {
+    if (!key) {
+      return;
+    }
+
+    if (key === CONSOLE_KEY && consoleUnlocked) {
       setState({ mode: 'console' });
       return;
     }
 
-    const pad = padByKey(key);
+    const pad = key === CONSOLE_KEY ? null : padByKey(key);
 
-    if (pad) {
-      setState({ x: pad.x, y: pad.y, panel: pad.key });
+    if (!pad) {
+      showNotFound();
+      return;
     }
+
+    setState({ x: pad.x, y: pad.y });
+    openPad(pad.key);
   }
 
   for (const pad of PADS) {
@@ -206,6 +284,7 @@ export function initWorld(root: HTMLElement): void {
   }
 
   root.querySelector<HTMLElement>('[data-open]')!.addEventListener('click', openHere);
+  notFound.querySelector<HTMLElement>('[data-close]')!.addEventListener('click', () => notFound.close());
 
   window.addEventListener(
     'keydown',
@@ -245,7 +324,5 @@ export function initWorld(root: HTMLElement): void {
 
   subscribe(render);
   readHash();
-  render();
-  flushLayout(root);
-  root.dataset.ready = '';
+  withoutTransition(render);
 }

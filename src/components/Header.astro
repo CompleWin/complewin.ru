@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { localePath } from '../content';
+import { LANGUAGES, localePath } from '../content';
 import type { Lang, UiStrings } from '../content/types';
 
 interface Props {
@@ -16,12 +16,18 @@ const LOGO_USER = 'nikolay';
 const LOGO_HOST = '@ivakhnenko';
 
 const RESUME_PATH = '/resume/';
+const LANG_LIST_ID = 'lang-list';
 
 const ACTION = 'btn text-12 whitespace-nowrap';
-const SEG_LINK =
-  'px-[9px] py-[6px] font-mono text-11 text-text hover:bg-text/7 hover:text-text hover:no-underline aria-[current=page]:text-accent aria-[current=page]:shadow-[inset_0_0_0_1px_var(--color-accent)] aria-[current=page]:hover:bg-transparent';
+const LANG_BUTTON =
+  'inline-flex items-center gap-[5px] rounded-md border border-divider px-[9px] py-[6px] font-mono text-11 text-text cursor-pointer hover:border-accent hover:text-accent';
+const LANG_LIST =
+  'absolute right-0 top-[calc(100%+7px)] z-40 min-w-full overflow-hidden rounded-md bg-bg shadow-md';
+const LANG_ITEM =
+  'block px-[13px] py-[7px] font-mono text-11 text-text hover:bg-text/7 hover:text-text hover:no-underline aria-[current=page]:text-accent';
 
 const onResume = path === RESUME_PATH;
+const current = LANGUAGES.find((entry) => entry.lang === lang)!;
 ---
 
 <header
@@ -41,15 +47,28 @@ const onResume = path === RESUME_PATH;
       </button>
     )
   }
-  <nav class="inline-flex overflow-hidden rounded-md border border-divider" aria-label={ui.language}>
-    <a class={SEG_LINK} href={localePath('ru', path)} hreflang="ru" data-keep-hash aria-current={lang === 'ru' ? 'page' : undefined}>RU</a>
-    <a
-      class={`${SEG_LINK} border-l border-divider`}
-      href={localePath('en', path)}
-      hreflang="en"
-      data-keep-hash
-      aria-current={lang === 'en' ? 'page' : undefined}
-    >EN</a>
+  <nav class="relative" aria-label={ui.language} data-lang>
+    <button type="button" class={LANG_BUTTON} aria-expanded="false" aria-controls={LANG_LIST_ID} data-lang-button>
+      {current.label}
+      <Icon name="caret-down" size={11} />
+    </button>
+    <ul class={LANG_LIST} id={LANG_LIST_ID} data-lang-list hidden>
+      {
+        LANGUAGES.map((entry) => (
+          <li>
+            <a
+              class={LANG_ITEM}
+              href={localePath(entry.lang, path)}
+              hreflang={entry.lang}
+              data-keep-hash
+              aria-current={entry.lang === lang ? 'page' : undefined}
+            >
+              {entry.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </nav>
   {
     onResume ? (
@@ -65,3 +84,9 @@ const onResume = path === RESUME_PATH;
     )
   }
 </header>
+
+<script>
+  import { initLangMenu } from '../scripts/lang';
+
+  initLangMenu(document.querySelector<HTMLElement>('[data-lang]')!);
+</script>

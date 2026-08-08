@@ -1,0 +1,44 @@
+.game {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vh, 18px);
+  width: 100%;
+  min-height: 0;
+}
+
+.game-stage {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.game-canvas {
+  display: block;
+  border-radius: 16px;
+  background: var(--color-bg);
+  box-shadow: 0 0 0 1px var(--color-neutral-800), 0 24px 60px rgba(0, 0, 0, .5);
+  image-rendering: pixelated;
+}
+
+.game-controls {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 14px;
+}
+
+.game-controls button {
+  touch-action: none;
+}
+
+.game-keys {
+  display: flex;
+  gap: 6px;
+}

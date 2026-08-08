@@ -30,14 +30,18 @@ type Listener = (state: State) => void;
 
 const listeners: Listener[] = [];
 
-export function subscribe(listener: Listener): void {
+export function subscribe(listener: Listener): () => void {
   listeners.push(listener);
+
+  return () => {
+    listeners.splice(listeners.indexOf(listener), 1);
+  };
 }
 
 export function setState(patch: Partial<State>): void {
   Object.assign(state, patch);
 
-  for (const listener of listeners) {
+  for (const listener of [...listeners]) {
     listener(state);
   }
 }

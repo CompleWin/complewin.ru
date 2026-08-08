@@ -340,5 +340,17 @@ export const en: Content = {
       resume: 'Opening the plain resume…',
       lang: 'Switching the language…',
     },
+    game: {
+      label: 'A game: a fixed shooter on a canvas. Arrows to move, space to fire, Esc back to the console.',
+      score: 'score',
+      best: 'best',
+      wave: 'wave',
+      paused: 'paused',
+      over: 'game over',
+      again: 'fire to restart',
+      quit: 'esc to quit',
+      fire: 'ENTER',
+      back: '← Console',
+    },
   },
 };

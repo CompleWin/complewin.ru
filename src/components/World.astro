@@ -20,9 +20,6 @@ const DPAD_CELL = {
   down: 'col-start-2 row-start-2',
   right: 'col-start-3 row-start-2',
 };
-
-const DPAD_BUTTON =
-  'rounded-[9px] border border-divider bg-surface/70 text-[16px] text-text cursor-pointer hover:border-accent hover:text-accent';
 ---
 
 <main
@@ -65,17 +62,13 @@ const DPAD_BUTTON =
     <div class="grid grid-cols-[repeat(3,44px)] grid-rows-[repeat(2,44px)] gap-[6px]">
       {
         DPAD.map((direction) => (
-          <button type="button" class={`${DPAD_CELL[direction]} ${DPAD_BUTTON}`} data-move={direction} aria-label={direction}>
+          <button type="button" class={`${DPAD_CELL[direction]} dpad-key`} data-move={direction} aria-label={direction}>
             {DPAD_GLYPHS[direction]}
           </button>
         ))
       }
     </div>
-    <button
-      type="button"
-      class="min-h-[44px] px-[18px] font-mono text-12 tracking-wide text-accent bg-accent/10 rounded-[9px] border border-accent cursor-pointer hover:bg-accent/20"
-      data-open>{ui.open}</button
-    >
+    <button type="button" class="dpad-enter" data-open>{ui.open}</button>
   </div>
 
   <p class="sr-only" aria-live="polite" data-status></p>

@@ -231,6 +231,48 @@
   }
 }
 
+@utility dpad-key {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-size: 16px;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  border: 1px solid var(--color-divider);
+  border-radius: 9px;
+  cursor: pointer;
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+  }
+}
+
+@utility dpad-enter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  font-family: var(--font-mono);
+  font-size: var(--text-12);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  border: 1px solid var(--color-accent);
+  border-radius: 9px;
+  cursor: pointer;
+
+  @media (hover: hover) {
+    &:hover {
+      background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+    }
+  }
+}
+
 @utility card {
   display: flex;
   flex-direction: column;

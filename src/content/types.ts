@@ -196,7 +196,6 @@ export interface ConsoleStrings {
 export interface UiStrings {
   plainResume: string;
   toMap: string;
-  back: string;
   print: string;
   language: string;
   close: string;

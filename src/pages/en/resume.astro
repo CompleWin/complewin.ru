@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResumeDocument from '../../components/ResumeDocument.astro';
+import { getContent } from '../../content';
+
+const content = getContent('en');
+---
+
+<Base lang="en">
+  <ResumeDocument content={content} />
+  <script>
+    import '../../scripts/resume';
+  </script>
+</Base>

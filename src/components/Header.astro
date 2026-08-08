@@ -15,8 +15,13 @@ const { lang, ui, path, map } = Astro.props;
 const LOGO_USER = 'nikolay';
 const LOGO_HOST = '@ivakhnenko';
 
+const RESUME_PATH = '/resume/';
+
+const ACTION = 'btn text-12 whitespace-nowrap';
 const SEG_LINK =
   'px-[9px] py-[6px] font-mono text-11 text-text hover:bg-text/7 hover:text-text hover:no-underline aria-[current=page]:text-accent aria-[current=page]:shadow-[inset_0_0_0_1px_var(--color-accent)] aria-[current=page]:hover:bg-transparent';
+
+const onResume = path === RESUME_PATH;
 ---
 
 <header
@@ -30,7 +35,7 @@ const SEG_LINK =
   </a>
   {
     map && (
-      <button type="button" class="btn btn-secondary text-12 whitespace-nowrap" data-to-map hidden>
+      <button type="button" class={`${ACTION} btn-secondary`} data-to-map hidden>
         <Icon name="arrow-left" size={15} />
         {ui.toMap}
       </button>
@@ -46,8 +51,17 @@ const SEG_LINK =
       aria-current={lang === 'en' ? 'page' : undefined}
     >EN</a>
   </nav>
-  <a class="btn btn-primary text-12 whitespace-nowrap" href={localePath(lang, '/resume/')}>
-    <Icon name="read-cv-logo" size={15} />
-    {ui.plainResume}
-  </a>
+  {
+    onResume ? (
+      <a class={`${ACTION} btn-primary`} href={localePath(lang, '/')}>
+        <Icon name="arrow-left" size={15} />
+        {ui.toMap}
+      </a>
+    ) : (
+      <a class={`${ACTION} btn-primary`} href={localePath(lang, RESUME_PATH)}>
+        <Icon name="read-cv-logo" size={15} />
+        {ui.plainResume}
+      </a>
+    )
+  }
 </header>

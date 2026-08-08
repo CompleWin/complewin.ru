@@ -125,8 +125,14 @@ const resultsLine = filledResults.map((item) => `${item.label} — ${item.value}
           {
             skills.rows.map((row) => (
               <tr>
-                <td class="w-[36%] text-13 text-text/60">{row.category}</td>
-                <td>{row.items}</td>
+                <td class="w-[30%] text-13 text-text/60">{row.category}</td>
+                <td>
+                  <ul class="flex flex-wrap gap-[5px]">
+                    {row.items.map((item) => (
+                      <li class="tag tag-accent">{item}</li>
+                    ))}
+                  </ul>
+                </td>
               </tr>
             ))
           }

@@ -56,4 +56,9 @@
   .docsheet td {
     padding: 3px;
   }
+
+  .docsheet .tag {
+    padding: 1px 6px;
+    border: 1px solid #bbb;
+  }
 }

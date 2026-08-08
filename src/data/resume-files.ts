@@ -47,7 +47,7 @@ export const experienceFile = both((content) => [
 export const skillsFile = both((content) => [
   '{',
   ...content.skills.rows.map(
-    (row) => `  "${row.category}": [${row.items.split(', ').map((item) => `"${item}"`).join(', ')}],`,
+    (row) => `  "${row.category}": [${row.items.map((item) => `"${item}"`).join(', ')}],`,
   ),
   `  "note": "${content.skills.note}"`,
   '}',

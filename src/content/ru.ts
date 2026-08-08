@@ -18,7 +18,6 @@ export const ru: Content = {
     open: 'ENTER',
     openSection: 'Открыть раздел',
     closeSection: 'Закрыть раздел',
-    mapHint: '← ↑ ↓ → или WASD · Enter — открыть · Esc — закрыть',
     mapLabel: 'Карта: персонаж ходит между площадками разделов',
     padAnnounce: 'Нажмите Enter, чтобы открыть',
     pads: {
@@ -208,12 +207,18 @@ export const ru: Content = {
   skills: {
     title: 'Навыки',
     rows: [
-      { category: 'Языки программирования', items: 'C#, Java, Python, JavaScript, TypeScript, C/C++, Assembler' },
-      { category: 'Backend', items: 'ASP.NET Core, Entity Framework Core, Spring Boot, REST API, JWT, S3' },
-      { category: 'Frontend', items: 'React, Vue.js, Astro, HTML, CSS, Tailwind CSS' },
-      { category: 'Базы данных', items: 'PostgreSQL, SQL, MySQL, SQLite, Supabase' },
-      { category: 'Тестирование', items: 'Playwright, pytest, e2e-автотесты, JUnit' },
-      { category: 'Инструменты', items: 'Git, Docker, Postman, Jira, Confluence' },
+      {
+        category: 'Языки программирования',
+        items: ['C#', 'Java', 'Python', 'JavaScript', 'TypeScript', 'C/C++', 'Assembler'],
+      },
+      {
+        category: 'Backend',
+        items: ['ASP.NET Core', 'Entity Framework Core', 'Spring Boot', 'REST API', 'JWT', 'S3'],
+      },
+      { category: 'Frontend', items: ['React', 'Vue.js', 'Astro', 'HTML', 'CSS', 'Tailwind CSS'] },
+      { category: 'Базы данных', items: ['PostgreSQL', 'SQL', 'MySQL', 'SQLite', 'Supabase'] },
+      { category: 'Тестирование', items: ['Playwright', 'pytest', 'e2e-автотесты', 'JUnit'] },
+      { category: 'Инструменты', items: ['Git', 'Docker', 'Postman', 'Jira', 'Confluence'] },
     ],
     note: 'Целевой стек — C# / ASP.NET Core. Java и Spring Boot — промышленный опыт в Сбере; фронтенд беру на себя, когда проект того требует.',
   },

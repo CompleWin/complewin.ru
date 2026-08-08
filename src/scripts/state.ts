@@ -8,6 +8,7 @@ export interface State {
   y: number;
   panel: PadKey | null;
   cwd: string;
+  opened: string[];
   found: string[];
 }
 
@@ -21,6 +22,7 @@ export const state: State = {
   y: START_Y,
   panel: null,
   cwd: HOME_DIR,
+  opened: [],
   found: [],
 };
 

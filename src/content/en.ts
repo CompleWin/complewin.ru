@@ -18,7 +18,6 @@ export const en: Content = {
     open: 'ENTER',
     openSection: 'Open section',
     closeSection: 'Close section',
-    mapHint: '← ↑ ↓ → or WASD · Enter to open · Esc to close',
     mapLabel: 'Map: walk the character between the section pads',
     padAnnounce: 'Press Enter to open',
     pads: {
@@ -208,12 +207,18 @@ export const en: Content = {
   skills: {
     title: 'Skills',
     rows: [
-      { category: 'Languages', items: 'C#, Java, Python, JavaScript, TypeScript, C/C++, Assembler' },
-      { category: 'Backend', items: 'ASP.NET Core, Entity Framework Core, Spring Boot, REST API, JWT, S3' },
-      { category: 'Frontend', items: 'React, Vue.js, Astro, HTML, CSS, Tailwind CSS' },
-      { category: 'Databases', items: 'PostgreSQL, SQL, MySQL, SQLite, Supabase' },
-      { category: 'Testing', items: 'Playwright, pytest, e2e tests, JUnit' },
-      { category: 'Tooling', items: 'Git, Docker, Postman, Jira, Confluence' },
+      {
+        category: 'Languages',
+        items: ['C#', 'Java', 'Python', 'JavaScript', 'TypeScript', 'C/C++', 'Assembler'],
+      },
+      {
+        category: 'Backend',
+        items: ['ASP.NET Core', 'Entity Framework Core', 'Spring Boot', 'REST API', 'JWT', 'S3'],
+      },
+      { category: 'Frontend', items: ['React', 'Vue.js', 'Astro', 'HTML', 'CSS', 'Tailwind CSS'] },
+      { category: 'Databases', items: ['PostgreSQL', 'SQL', 'MySQL', 'SQLite', 'Supabase'] },
+      { category: 'Testing', items: ['Playwright', 'pytest', 'e2e tests', 'JUnit'] },
+      { category: 'Tooling', items: ['Git', 'Docker', 'Postman', 'Jira', 'Confluence'] },
     ],
     note: 'C# / ASP.NET Core is the target stack. Java and Spring Boot are production experience at Sber; I take the front end when a project needs it.',
   },

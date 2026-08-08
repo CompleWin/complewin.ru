@@ -23,7 +23,7 @@ const { teaching } = Astro.props;
 {teaching.body.map((paragraph) => <p class="max-w-[66ch] text-15 leading-[1.7] text-pretty">{paragraph}</p>)}
 <div class="mt-[22px] rounded-[10px] px-[18px] py-[16px] bg-accent/8 shadow-[0_0_0_1px_var(--color-accent-800)]">
   <p class="mb-[12px] text-15 font-medium">{teaching.results.title}</p>
-  <ul class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-[12px]">
+  <ul class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-[12px]">
     {
       teaching.results.items.map((item) => (
         <li>

@@ -43,12 +43,6 @@ function wrap(value: number, size: number): number {
   return ((value % size) + size) % size;
 }
 
-function shortestStep(from: number, to: number, size: number): number {
-  const forward = wrap(to - from, size);
-
-  return Math.sign(forward <= size / 2 ? forward : forward - size) * STEP;
-}
-
 function cameraOffset(viewport: number, world: number, position: number): number {
   if (viewport >= world) {
     return Math.round((viewport - world) / 2);
@@ -246,10 +240,10 @@ export function initWorld(root: HTMLElement): void {
         return;
       }
 
-      const dx = shortestStep(state.x, pad.x, WORLD_WIDTH);
-      const dy = dx === 0 ? shortestStep(state.y, pad.y, WORLD_HEIGHT) : 0;
+      const dx = state.x === pad.x ? 0 : Math.sign(pad.x - state.x) * STEP;
+      const dy = dx === 0 ? Math.sign(pad.y - state.y) * STEP : 0;
 
-      place(state.x + dx, state.y + dy);
+      setState({ x: state.x + dx, y: state.y + dy });
     }, WALK_INTERVAL_MS);
   }
 

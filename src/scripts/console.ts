@@ -90,6 +90,16 @@ export function initConsole(root: HTMLElement): void {
     }
   }
 
+  async function play(): Promise<void> {
+    const { run } = await import('./game');
+    const result = await run(root, strings.game);
+
+    feed.print([
+      { kind: 'dim', text: `${strings.game.score}: ${result.score} · ${strings.game.best}: ${result.best}` },
+    ]);
+    sync();
+  }
+
   function leave(result: { toMap?: boolean; href?: string }): void {
     window.setTimeout(() => {
       if (result.href) {
@@ -138,6 +148,10 @@ export function initConsole(root: HTMLElement): void {
 
     if (result.found) {
       register(result.found);
+    }
+
+    if (result.program) {
+      play();
     }
 
     if (result.toMap || result.href) {

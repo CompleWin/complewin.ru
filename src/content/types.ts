@@ -181,6 +181,19 @@ export interface SecretStrings {
   complete: string;
 }
 
+export interface GameStrings {
+  label: string;
+  score: string;
+  best: string;
+  wave: string;
+  paused: string;
+  over: string;
+  again: string;
+  quit: string;
+  fire: string;
+  back: string;
+}
+
 export interface ConsoleStrings {
   label: string;
   inputLabel: string;
@@ -191,6 +204,7 @@ export interface ConsoleStrings {
   errors: ConsoleErrors;
   secrets: SecretStrings;
   leaving: Record<'map' | 'resume' | 'lang', string>;
+  game: GameStrings;
 }
 
 export interface UiStrings {

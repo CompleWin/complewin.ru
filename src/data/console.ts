@@ -23,7 +23,7 @@ export type FsEntry =
   | (EntryBase & { kind: 'text'; body: Localized<FileLine[]> })
   | (EntryBase & { kind: 'image'; src: string; alt: Localized<string>; caption?: Localized<string> })
   | (EntryBase & { kind: 'denied'; message: Localized<string> })
-  | (EntryBase & { kind: 'program'; id: string; blurb: Localized<string> });
+  | (EntryBase & { kind: 'program'; blurb: Localized<string> });
 
 export interface SecretCommand {
   name: string;
@@ -290,10 +290,9 @@ export const filesystem: FsEntry[] = [
     path: `/usr/games/${GAME_NAME}`,
     kind: 'program',
     secret: true,
-    id: 'starfall',
     blurb: {
-      ru: 'исполняемый файл: fixed shooter 224x256. Ещё не установлен — появится здесь же.',
-      en: 'executable: a 224x256 fixed shooter. Not installed yet, it will show up right here.',
+      ru: `исполняемый файл: fixed shooter 224x256. Запускается вводом имени — ${GAME_NAME}.`,
+      en: `executable: a 224x256 fixed shooter. Type its name to run it — ${GAME_NAME}.`,
     },
   },
   {
@@ -436,7 +435,7 @@ function resolveEntry(entry: FsEntry, lang: Lang): FsFile {
     case 'denied':
       return { ...base, kind: 'denied', message: pick(entry.message, lang) };
     case 'program':
-      return { ...base, kind: 'program', id: entry.id, blurb: pick(entry.blurb, lang) };
+      return { ...base, kind: 'program', blurb: pick(entry.blurb, lang) };
   }
 }
 

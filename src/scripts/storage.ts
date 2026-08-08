@@ -1,5 +1,6 @@
 const FOUND_KEY = 'complewin.console.v1';
 const OPENED_KEY = 'complewin.sections.v1';
+const BEST_KEY = 'complewin.game.v1';
 
 function read(key: string): string[] {
   try {
@@ -33,4 +34,20 @@ export function readOpened(): string[] {
 
 export function writeOpened(opened: string[]): void {
   write(OPENED_KEY, opened);
+}
+
+export function readBest(): number {
+  try {
+    return Number(localStorage.getItem(BEST_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+export function writeBest(best: number): void {
+  try {
+    localStorage.setItem(BEST_KEY, String(best));
+  } catch {
+    return;
+  }
 }

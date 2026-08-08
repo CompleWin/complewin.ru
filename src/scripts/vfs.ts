@@ -12,7 +12,7 @@ export type FsFile =
   | (FsBase & { kind: 'text'; body: FileLine[] })
   | (FsBase & { kind: 'image'; src: string; alt: string; caption?: string })
   | (FsBase & { kind: 'denied'; message: string })
-  | (FsBase & { kind: 'program'; id: string; blurb: string });
+  | (FsBase & { kind: 'program'; blurb: string });
 
 export interface FsNode {
   name: string;

@@ -27,11 +27,13 @@ export interface CommandResult {
   toMap?: boolean;
   found?: string;
   rain?: boolean;
+  program?: boolean;
 }
 
 const DAY_MS = 86400000;
 const HELP_GAP = 2;
 const PLACEHOLDER = '{}';
+const GAMES_DIR = '/usr/games';
 
 const ALIASES: Record<string, CommandName | undefined> = {
   exit: 'map',
@@ -230,6 +232,22 @@ function cdResult(context: ConsoleContext, arg: string): CommandResult {
     : { lines: [failure('cd', result, context.data.strings)] };
 }
 
+function programAt(context: ConsoleContext, path: string): FsFile | null {
+  const file = nodeAt(context.tree, path)?.file;
+
+  return file?.kind === 'program' ? file : null;
+}
+
+function launchResult(context: ConsoleContext, name: string): CommandResult | null {
+  const file = programAt(context, resolvePath(context.cwd, name)) ?? programAt(context, `${GAMES_DIR}/${name}`);
+
+  if (!file) {
+    return null;
+  }
+
+  return { lines: [], program: true, found: file.secret ? file.path : undefined };
+}
+
 export function commandCompletions(prefix: string, found: string[]): string[] {
   const names: string[] = [
     ...HELP_ORDER.filter((name) => name !== 'secrets' || found.length > 0),
@@ -279,5 +297,5 @@ export function runCommand(input: string, context: ConsoleContext): CommandResul
     return { lines: bodyLines(secret.body), found: `cmd:${secret.name}`, rain: secret.rain };
   }
 
-  return { lines: [{ kind: 'dim', text: format(strings.errors.notFound, input) }] };
+  return launchResult(context, head) ?? { lines: [{ kind: 'dim', text: format(strings.errors.notFound, input) }] };
 }

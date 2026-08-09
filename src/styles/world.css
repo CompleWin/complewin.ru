@@ -83,7 +83,7 @@
   inset: 6px;
   border-radius: 12px;
   background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent), transparent 72%);
-  animation: padglow 3.2s ease-in-out var(--pad-delay) infinite;
+  animation: padglow 3.2s ease-in-out var(--pad-delay) infinite backwards;
 }
 
 .pad-label {

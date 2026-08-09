@@ -28,6 +28,7 @@
 
 .panel::backdrop {
   background: rgba(11, 12, 18, .74);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 

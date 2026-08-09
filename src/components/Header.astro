@@ -31,7 +31,7 @@ const current = LANGUAGES.find((entry) => entry.lang === lang)!;
 ---
 
 <header
-  class="sticky top-0 z-30 flex flex-wrap items-center gap-[clamp(8px,1.4vw,18px)] px-[clamp(12px,3vw,32px)] py-[11px] bg-page/86 shadow-[inset_0_-1px_0_color-mix(in_srgb,var(--color-text)_9%,transparent)] backdrop-blur-[10px] print:hidden"
+  class="sticky top-0 z-30 flex flex-wrap items-center gap-[clamp(8px,1.4vw,18px)] px-[clamp(12px,3vw,32px)] py-[11px] bg-page/86 shadow-[inset_0_-1px_0_color-mix(in_srgb,var(--color-text)_9%,transparent)] backdrop-blur-[10px] [-webkit-backdrop-filter:blur(10px)] print:hidden"
 >
   <a
     class="mr-auto font-mono text-[clamp(11px,1.5vw,13px)] tracking-[.02em] whitespace-nowrap hover:text-accent hover:no-underline"

@@ -53,12 +53,12 @@ const resultsLine = filledResults.map((item) => `${item.label} — ${item.value}
     </ul>
 
     <section class="mb-[26px]">
-      <h3 class={HEADING}>{ui.resumeHeadings.about}</h3>
+      <h2 class={HEADING}>{ui.resumeHeadings.about}</h2>
       <p class="mb-0 text-[14.5px] leading-[1.65] text-pretty">{person.summaryPlain}</p>
     </section>
 
     <section class="mb-[26px]">
-      <h3 class={HEADING}>{ui.resumeHeadings.experience}</h3>
+      <h2 class={HEADING}>{ui.resumeHeadings.experience}</h2>
       <div class={TITLE_ROW}>
         <p class={JOB_TITLE}>{experience.employer} — {experience.position}</p>
         <p class={PERIOD}>{experience.periodShort}</p>
@@ -74,13 +74,12 @@ const resultsLine = filledResults.map((item) => `${item.label} — ${item.value}
         }
       </ul>
       <p class="mb-0 text-13 text-text/60">
-        <b class="font-medium text-text">{experience.stackLabel}</b>
-        {experience.stack.join(', ')}
+        <b class="font-medium text-text">{experience.stackLabel}</b> {experience.stack.join(', ')}
       </p>
     </section>
 
     <section class="mb-[26px]">
-      <h3 class={HEADING}>{ui.resumeHeadings.teaching}</h3>
+      <h2 class={HEADING}>{ui.resumeHeadings.teaching}</h2>
       <div class={TITLE_ROW}>
         <p class={JOB_TITLE}>{teaching.resumeTitle}</p>
         <p class={PERIOD}>{teaching.resumeMeta}</p>
@@ -96,7 +95,7 @@ const resultsLine = filledResults.map((item) => `${item.label} — ${item.value}
     </section>
 
     <section class="mb-[26px]">
-      <h3 class={HEADING}>{ui.resumeHeadings.projects}</h3>
+      <h2 class={HEADING}>{ui.resumeHeadings.projects}</h2>
       {
         projectList.map((project) => (
           <div class="mb-[16px] last:mb-0">
@@ -119,7 +118,7 @@ const resultsLine = filledResults.map((item) => `${item.label} — ${item.value}
     </section>
 
     <section class="mb-[26px]">
-      <h3 class={HEADING}>{ui.resumeHeadings.skills}</h3>
+      <h2 class={HEADING}>{ui.resumeHeadings.skills}</h2>
       <table class="data-table">
         <tbody>
           {
@@ -141,13 +140,13 @@ const resultsLine = filledResults.map((item) => `${item.label} — ${item.value}
     </section>
 
     <section class="mb-[26px]">
-      <h3 class={HEADING}>{ui.resumeHeadings.education}</h3>
+      <h2 class={HEADING}>{ui.resumeHeadings.education}</h2>
       <p class={ENTRY_TITLE}>{education.resumeUniversity}</p>
       <p class="mt-[4px] mb-0 text-14 text-text/72">{education.resumeMeta}</p>
     </section>
 
     <section>
-      <h3 class={HEADING}>{ui.resumeHeadings.languages}</h3>
+      <h2 class={HEADING}>{ui.resumeHeadings.languages}</h2>
       <p class="mb-0 text-[14.5px]">{education.languagesPlain}</p>
     </section>
   </div>

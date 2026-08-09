@@ -32,7 +32,7 @@
     content: " (" attr(href) ")";
   }
 
-  .docsheet h3 {
+  .docsheet h2 {
     break-after: avoid;
     margin-bottom: 6px;
   }

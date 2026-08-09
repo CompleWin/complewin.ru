@@ -177,9 +177,9 @@ export function initWorld(root: HTMLElement): void {
 
   function openPad(key: PadKey): void {
     if (key === CONSOLE_KEY) {
-      setState({ mode: 'console' });
+      setState({ mode: 'console', panel: null });
     } else {
-      setState({ panel: key });
+      setState({ mode: 'map', panel: key });
       remember(key);
     }
 
@@ -248,6 +248,7 @@ export function initWorld(root: HTMLElement): void {
   }
 
   function showNotFound(): void {
+    setState({ mode: 'map', panel: null });
     history.replaceState(null, '', location.pathname + location.search);
     notFound.showModal();
   }
@@ -260,7 +261,7 @@ export function initWorld(root: HTMLElement): void {
     }
 
     if (key === CONSOLE_KEY && consoleUnlocked) {
-      setState({ mode: 'console' });
+      openPad(CONSOLE_KEY);
       return;
     }
 
@@ -273,6 +274,19 @@ export function initWorld(root: HTMLElement): void {
 
     setState({ x: pad.x, y: pad.y });
     openPad(pad.key);
+  }
+
+  function followHash(): void {
+    if (!location.hash) {
+      closeOverlays();
+      return;
+    }
+
+    if (notFound.open) {
+      notFound.close();
+    }
+
+    withoutTransition(readHash);
   }
 
   for (const pad of PADS) {
@@ -320,6 +334,7 @@ export function initWorld(root: HTMLElement): void {
     { passive: false },
   );
 
+  window.addEventListener('hashchange', followHash);
   window.addEventListener('resize', render);
 
   subscribe(render);

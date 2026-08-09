@@ -17,6 +17,7 @@ const STAR_SPEEDS = [0.22, 0.5];
 const PARTICLE_SIZE = 2;
 const SHAKE_RANGE = 4;
 const BLINK_FRAMES = 4;
+const VEIL_ALPHA = 0.82;
 
 interface Star {
   x: number;
@@ -131,6 +132,17 @@ export function createRenderer(canvas: HTMLCanvasElement, strings: GameStrings):
     }
   }
 
+  function drawVeil(game: Game): void {
+    if (!game.over && !game.paused) {
+      return;
+    }
+
+    ctx.globalAlpha = VEIL_ALPHA;
+    ctx.fillStyle = colors['--color-bg'];
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.globalAlpha = 1;
+  }
+
   function drawOverlay(game: Game): void {
     if (!game.over && !game.paused) {
       return;
@@ -144,10 +156,10 @@ export function createRenderer(canvas: HTMLCanvasElement, strings: GameStrings):
       return;
     }
 
-    ctx.fillText(strings.over.toUpperCase(), WIDTH / 2, HEIGHT / 2 - HUD_LINE);
+    ctx.fillText(strings.over.toUpperCase(), WIDTH / 2, HEIGHT / 2);
     ctx.fillStyle = colors['--color-neutral-400'];
-    ctx.fillText(strings.again.toUpperCase(), WIDTH / 2, HEIGHT / 2 + HUD_LINE);
-    ctx.fillText(strings.quit.toUpperCase(), WIDTH / 2, HEIGHT / 2 + HUD_LINE * 2);
+    ctx.fillText(strings.again.toUpperCase(), WIDTH / 2, HEIGHT / 2 + HUD_LINE * 2);
+    ctx.fillText(strings.quit.toUpperCase(), WIDTH / 2, HEIGHT / 2 + HUD_LINE * 3);
   }
 
   return {
@@ -169,6 +181,7 @@ export function createRenderer(canvas: HTMLCanvasElement, strings: GameStrings):
       drawShots(game);
       drawParticles(game);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
+      drawVeil(game);
       drawHud(game);
       drawOverlay(game);
     },

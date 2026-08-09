@@ -17,7 +17,7 @@ import {
 } from './model';
 
 const MARGIN = 8;
-const PLAYER_SPEED = 1.4;
+const PLAYER_SPEED = 2;
 const PLAYER_BULLETS = 2;
 const BULLET_SPEED = 4;
 const LIVES = 3;
